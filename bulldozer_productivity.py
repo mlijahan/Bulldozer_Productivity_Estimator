@@ -2,7 +2,10 @@
 """ Calculation of Wheel/Track Bulldozer's Productivity for a particular activity"""
 import numpy as np
 
-
+manufacturer = input("Insert the manufacturer name of the bulldozer:\n\n")
+model_name = input("Insert the model name of the bulldozer:\n\n")
+blade_type = input("Insert blade type name of the bulldozer:\n\n")
+activity = input("Insert the title of the activity:\n\n")
 haul_distance = float(input("please insert haul distance in km:\n"))
 haul_speed = float(input("please insert speed of dozer according to the max speed on a particular gear"
                              "during hauling in Km/hr:\n"))
@@ -11,6 +14,14 @@ return_speed = float(input("please insert speed of dozer according to the max sp
                                 "during returning in Km/hr:\n"))
 blade_capacity = float(input("please insert blade's capacity in m3 :\n"))
 
+
+def machine_name(manufacturer, model_name, blade_type):
+    """ Define the fullname of machine as:
+    Mnufacturer's name + Tractor's model name + type of blade of bulldozer (S( Straight blade), U( Universal blade), SU(Semi U),...)"""
+    manufacturer_case = manufacturer.upper()
+    model_case = model_name.upper()
+    blade_type_case = blade_type.upper()
+    return f'{manufacturer_case} {model_case} {blade_type_case}'
 
 def haul_time(haul_distance):
     hauldistance = []
@@ -99,7 +110,7 @@ def real_productivity():
     """ Productivity is in m3/hr"""
     reals_productivitys = productivity_max() * grade_factor() * visibility_factor() * dozing_factor() * \
                                material_factor() * operator_factor()
-    print(np.round(reals_productivitys,2))
+    print(f'"Real productivity of {machine_name(manufacturer, model_name, blade_type)}" during doing "{activity}" is "{np.round(reals_productivitys[0],2)}"')
     return(np.round(reals_productivitys,2))
 
 
