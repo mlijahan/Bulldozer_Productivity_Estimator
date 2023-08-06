@@ -1,45 +1,46 @@
 
-""" Calculation of Wheel/Track Bulldozer's Rimpull for a particular activity"""
+""" Calculation of Wheel/Track Bulldozer's Productivity for a particular activity"""
 import numpy as np
 
 
-haul_speed = float(input("please insert haul distance km:\n"))
-reverse_speed = float(input("please insert haul distance km:\n"))
-blade_capacity = float(input("please insert haul distance km:\n"))
+haul_distance = float(input("please insert haul distance in km:\n"))
+haul_speed = float(input("please insert speed of dozer according to the max speed on a particular gear"
+                             "during hauling in Km/hr:\n"))
+return_distance = float(input("please insert return distance in km:\n"))
+return_speed = float(input("please insert speed of dozer according to the max speed on a particular gear"
+                                "during returning in Km/hr:\n"))
+blade_capacity = float(input("please insert blade's capacity in m3 :\n"))
 
-def haul_time():
-    hauldis = []
-    hauldis.append(float(input("please insert haul distance km:\n")))
-    haulldis = np.array(hauldis)
+
+def haul_time(haul_distance):
+    hauldistance = []
+    hauldistance.append(haul_distance)
+    haulldis = np.array(hauldistance)
     haultime = haulldis / haul_speed
     haultime_min = haultime * 60
-    return (haultime_min)
+    return haultime_min
 
 
-@property
-def reverse_time():
-    reversedis = []
-    reversedis.append(float(input("please insert reverse distance km:\n")))
-    reverssedis = np.array(reversedis)
-    reversetime = reverssedis / reverse_speed
+def reverse_time(return_distance):
+    returndistance = []
+    returndistance.append(return_distance)
+    reverssedis = np.array(returndistance)
+    reversetime = reverssedis / return_speed
     reversetime_min = reversetime * 60
     return (reversetime_min)
 
 
-@property
 def time_productivity(maneuvering_time=0.05, fix_time=0.05, spread_time=0, cut_time=0):
-    time_productivitys = haul_time() + reverse_time() + maneuvering_time + fix_time + spread_time + cut_time
+    time_productivitys = haul_time(haul_distance) + reverse_time(return_distance) + maneuvering_time + fix_time + spread_time + cut_time
     return (np.round(time_productivitys, 3))
 
 
-@property
 def productivity_max(efi=50):
     productivity_x = (blade_capacity * efi) / time_productivity()
     productivitymax = np.round(productivity_x, 2)
-    return (productivitymax)
+    return np.array(productivitymax)
 
 
-@property
 def operator_factor():
     operator = ['a', 'b', 'c']
     level = [1, 0.75, 0.6]
@@ -51,7 +52,6 @@ def operator_factor():
             return (level)
 
 
-@property
 def material_factor():
     dozing_material = ['a', 'b', 'c', 'd', 'e']
     factors = [1.2, 0.8, 0.7, 0.8, 0.6]
@@ -63,7 +63,6 @@ def material_factor():
             return (factors)
 
 
-@property
 def dozing_factor():
     dozing = ['a', 'b']
     dozing_factors = [1.2, 1.25]
@@ -74,7 +73,6 @@ def dozing_factor():
             return (dozing_factors)
 
 
-@property
 def visibility_factor():
     visibility = ['a', 'b']
     visibility_factorss = [0.8, 1]
@@ -86,7 +84,6 @@ def visibility_factor():
             return (visibility_factorss)
 
 
-@property
 def grade_factor():
     grade = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     grade_factorss = [1.6, 1.4, 1.2, 1, 0.8, 0.55, 0.3]
@@ -98,16 +95,21 @@ def grade_factor():
             return (grade_factorss)
 
 
-@property
 def real_productivity():
+    """ Productivity is in m3/hr"""
     reals_productivitys = productivity_max() * grade_factor() * visibility_factor() * dozing_factor() * \
                                material_factor() * operator_factor()
-    reals_productivity = [item for sublist in reals_productivitys for item in sublist]
-    print(np.round(reals_productivity, 2))
-    return (np.round(reals_productivity, 2))
+    print(np.round(reals_productivitys,2))
+    return(np.round(reals_productivitys,2))
 
 
 
+def main():
+
+    return real_productivity()
+
+if __name__ == "__main__":
+    main()
 
 
 
